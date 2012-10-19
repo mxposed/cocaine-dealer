@@ -89,17 +89,17 @@ void
 balancer_t::update_endpoints(const std::vector<cocaine_endpoint_t>& endpoints,
 							 std::vector<cocaine_endpoint_t>& missing_endpoints)
 {
-	std::vector<cocaine_endpoint_t> endpoints_tmp = endpoints;
-	std::sort(endpoints_tmp.begin(), endpoints_tmp.end());
+	std::vector<cocaine_endpoint_t> endpoints_sorted = endpoints;
+	std::sort(endpoints_sorted.begin(), endpoints_sorted.end());
 
-	if (m_endpoints.size() == endpoints_tmp.size()) {
-		if (std::equal(m_endpoints.begin(), m_endpoints.end(), endpoints_tmp.begin())) {
+	if (m_endpoints.size() == endpoints_sorted.size()) {
+		if (std::equal(m_endpoints.begin(), m_endpoints.end(), endpoints_sorted.begin())) {
 			return;
 		}
 	}
 
 	std::vector<cocaine_endpoint_t> new_endpoints;
-	get_endpoints_diff(endpoints, new_endpoints, missing_endpoints);
+	get_endpoints_diff(endpoints_sorted, new_endpoints, missing_endpoints);
 
 	if (!missing_endpoints.empty()) {
 
@@ -121,7 +121,7 @@ balancer_t::update_endpoints(const std::vector<cocaine_endpoint_t>& endpoints,
 		}
 	}
 
-	m_endpoints = endpoints;
+	m_endpoints = endpoints_sorted;
 }
 
 void
